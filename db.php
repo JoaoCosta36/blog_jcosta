@@ -1,12 +1,27 @@
 <?php
-$servername = "localhost";
-$username = "jcosta_user";
-$password = "senha123"; 
-$dbname = "blog_jcosta";
+// Carrega as definições do ficheiro externo
+$config = parse_ini_file('config.ini');
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Conexão falhou: " . $conn->connect_error);
+if ($config === false) {
+    // Erro caso o ficheiro .ini não exista ou esteja mal formatado
+    die("Erro: Não foi possível ler o ficheiro de configuração.");
 }
-mysqli_set_charset($conn, "utf8mb4");
+
+$servername = $config['host'];
+$username   = $config['user'];
+$password   = $config['pass'];
+$dbname     = $config['name'];
+
+// Criar a conexão
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar a conexão
+if ($conn->connect_error) {
+    // Em produção, não mostres o erro detalhado ao utilizador
+    error_log("Falha na conexão: " . $conn->connect_error);
+    die("Erro interno de base de dados.");
+}
+
+// Definir o charset para suportar acentos e emojis
+$conn->set_charset("utf8mb4");
 ?>
