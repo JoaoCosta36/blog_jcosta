@@ -1,0 +1,222 @@
+/* =========================================
+   Tema Vintage Celta
+========================================= */
+
+/* Fonte geral */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&display=swap');
+
+body {
+    font-family: 'EB Garamond', serif;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #e8e0d2;
+    margin: 0;
+   margin-left: 50px;  /* margem esquerda */
+    margin-right: 50px;
+    font-size: 1em; /* base levemente maior */
+}
+
+/* Fundo suave sobreposto para legibilidade */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(25, 20, 10, 0.75);
+    z-index: -1;
+}
+
+/* =========================================
+   Títulos
+========================================= */
+h1, h2 {
+    font-family: 'EB Garamond', serif;
+    color: #d4b26a;
+    letter-spacing: 0.5px;
+}
+
+h1 {
+    font-size: 2.4em; /* aumento leve */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+/* =========================================
+   Navbar Transparente
+========================================= */
+.nav_bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.25);
+    height: 60px; /* ligeiramente maior */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212,178,106,0.3);
+    font-family: 'EB Garamond', serif;
+    margin-left: 30px;  /* margem esquerda */
+    margin-right: 30px;
+}
+
+.nav_bar ul li {
+    margin-right: 25px;
+}
+
+.nav_bar a {
+    color: #e8e0d2;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1em; /* aumento leve */
+    transition: color 0.3s;
+}
+
+.nav_bar a:hover {
+    color: #d4b26a;
+}
+
+.nav_bar-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown de idioma */
+#customLang {
+    background: rgba(0, 0, 0, 0.3);
+    color: #f2e8d5;
+    border: 1px solid rgba(212,178,106,0.3);
+    padding: 6px 12px; /* maior */
+    border-radius: 6px;
+    font-size: 1em; /* maior */
+    cursor: pointer;
+}
+
+#customLang:hover {
+    background: rgba(212,178,106,0.15);
+}
+
+/* =========================================
+   Container de Posts
+========================================= */
+.post-container {
+    background: rgba(45, 35, 25, 0.85);
+    border: 1px solid rgba(212,178,106,0.3);
+    border-radius: 10px;
+    padding: 18px 22px; /* levemente maior */
+    margin-top: 90px;
+    max-width: 700px;
+    line-height: 1.5; /* leve aumento */
+}
+
+/* Posts compactos na index */
+.post-resumo {
+    background: rgba(35, 28, 20, 0.85);
+    border: 1px solid rgba(212,178,106,0.25);
+    padding: 12px 16px; /* aumento leve */
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.post-resumo:hover {
+    background: rgba(50, 40, 25, 0.9);
+    transform: scale(1.02); /* leve aumento ao hover */
+}
+
+.post-resumo h2 {
+    margin: 0;
+    font-size: 1.4em; /* aumento leve */
+    color: #d4b26a;
+}
+
+.post-resumo small {
+    color: #c2b8a6;
+    font-size: 0.85em; /* aumento leve */
+    font-style: italic;
+}
+
+.post-resumo p {
+    color: #e8e0d2;
+    font-size: 1em; /* aumento leve */
+    margin: 5px 0 0;
+}
+
+/* =========================================
+   Inputs e botões
+========================================= */
+input, textarea {
+    width: 40%;
+    margin: 4px 0;
+    padding: 7px; /* leve aumento */
+    border-radius: 6px;
+    border: 1px solid #5a4c3c;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-size: 1em; /* aumento leve */
+}
+
+textarea { resize: vertical; max-height: 180px; }
+
+button {
+    background: #d4b26a;
+    color: #2b241a;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05em; /* leve aumento */
+    border: none;
+    cursor: pointer;
+    margin-top: 6px;
+    padding: 7px 16px; /* aumento leve */
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #b6924d;
+    color: #fff;
+}
+
+/* =========================================
+   Comentários
+========================================= */
+.comentarios {
+    margin-top: 20px;
+    max-width: 700px;
+}
+
+.comentario {
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(212,178,106,0.25);
+    background: rgba(60, 50, 35, 0.7);
+}
+
+.comentario small {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 0.85em; /* aumento leve */
+    color: #c7bca4;
+}
+
+.comentario p {
+    margin: 0;
+    font-size: 0.95em; /* aumento leve */
+    line-height: 1.35em; /* leve aumento */
+}
+
+/* =========================================
+   Google Translate - Ocultar
+========================================= */
+.goog-te-banner-frame.skiptranslate,
+body > .skiptranslate,
+iframe.goog-te-menu-frame {
+    display: none !important;
+}
+body { top: 0 !important; }
