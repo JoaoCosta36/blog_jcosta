@@ -8,7 +8,7 @@ session_start();
 // ✅ Conexão com a BD
 require_once __DIR__ . "/db.php";
 
-// ✅ Caminho direto para o PHPMailer (ajustado para a tua pasta htdocs/PHPMailer/)
+// ✅ Caminho direto para o PHPMailer
 $phpmailer_dir = __DIR__ . '/PHPMailer/';
 
 if (file_exists($phpmailer_dir . 'PHPMailer.php')) {
@@ -42,7 +42,6 @@ if (isset($_POST['register'])) {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $erro = "O email introduzido não é válido.";
     } else {
-        // Verificar se email já existe
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -58,7 +57,6 @@ if (isset($_POST['register'])) {
             $stmt_insert->bind_param("sssss", $nome, $paixao_por, $email, $hash, $token);
 
             if ($stmt_insert->execute()) {
-                // ✅ Envio de Email via PHPMailer
                 try {
                     $mail = new PHPMailer(true);
                     $mail->CharSet = 'UTF-8';
@@ -70,19 +68,19 @@ if (isset($_POST['register'])) {
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port       = 587;
 
-                    $mail->setFrom($env['GMAIL_USER'] ?? 'noreply@teusite.com', $env['FROM_NAME'] ?? 'Sistema de Registo');
+                    $mail->setFrom($env['GMAIL_USER'] ?? 'noreply@joaocostart.com', $env['FROM_NAME'] ?? 'joaocostArt');
                     $mail->addAddress($email, $nome);
 
-                    $link = "http://localhost/confirm_register.php?token=" . $token;
+                    $link = "https://joaocostart.com/confirm_register.php?token=" . $token;
                     
                     $mail->isHTML(true);
-                    $mail->Subject = 'Confirma o teu Registo';
+                    $mail->Subject = 'Confirma o teu Registo - joaocostArt';
                     $mail->Body    = "<h2>Bem-vindo, $nome!</h2><p>Clique no botão abaixo para ativar a sua conta:</p>
-                                     <a href='$link' style='background:#28a745; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;'>Confirmar Conta</a>";
+                                     <a href='$link' style='background:#d4b26a; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;'>Confirmar Conta</a>";
 
                     $mail->send();
                     $sucesso = "Registo efetuado! Verifica a tua caixa de entrada.";
-                    $nome = $paixao_por = $email = ''; // Limpar campos
+                    $nome = $paixao_por = $email = ''; 
                 } catch (Exception $e) {
                     $sucesso = "Conta criada, mas houve um erro ao enviar o email de confirmação.";
                 }
@@ -97,11 +95,101 @@ if (isset($_POST['register'])) {
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<?php include 'adsense.php'; ?>
+    <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registo de Utilizador</title>
+    <title>Registo - joaocostArt</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Correção de Alinhamento */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .form-wrapper {
+            background: rgba(45, 35, 25, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 178, 106, 0.3);
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .form-wrapper h1 {
+            color: #d4b26a;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .form-wrapper p {
+            text-align: center;
+            color: #c2b8a6;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column; /* Alinha label em cima do input */
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #d4b26a;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #5a4c3c;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box; /* Garante que o padding não quebre a largura */
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #d4b26a;
+            color: #2b241a;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: #b6924d;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .alert-danger { background: rgba(255, 0, 0, 0.2); color: #ff8888; border: 1px solid #ff0000; }
+        .alert-success { background: rgba(0, 255, 0, 0.1); color: #88ff88; border: 1px solid #00ff00; }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-footer a { color: #d4b26a; text-decoration: none; }
+    </style>
 </head>
 <body>
 
@@ -128,7 +216,7 @@ if (isset($_POST['register'])) {
 
                 <div class="form-group">
                     <label>Paixão por...</label>
-                    <input type="text" name="paixao_por" value="<?php echo htmlspecialchars($paixao_por); ?>">
+                    <input type="text" name="paixao_por" value="<?php echo htmlspecialchars($paixao_por); ?>" placeholder="Ex: Música dos anos 80">
                 </div>
 
                 <div class="form-group">
