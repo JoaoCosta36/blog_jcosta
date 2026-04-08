@@ -5,6 +5,7 @@ header('Content-Type: text/html; charset=UTF-8');
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
 <link rel="icon" href="icon.jpg" type="image/png">
 <meta charset="UTF-8">
 <link rel="icon" href="icon.png" type="image/png">

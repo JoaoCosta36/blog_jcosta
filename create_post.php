@@ -80,6 +80,7 @@ if (isset($_POST['criar'])) {
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <title>Criar Post</title>
     <link rel="icon" href="icon.png" type="image/png">

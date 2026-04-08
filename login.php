@@ -43,6 +43,7 @@ if(isset($_POST['login'])){
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
 <meta charset="UTF-8">
 <title>Login</title>
 <link rel="icon" href="icon.png" type="image/png">

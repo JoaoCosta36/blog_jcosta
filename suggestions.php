@@ -83,6 +83,7 @@ $sugestoes_result = $conn->query("SELECT s.title, s.content, u.nome
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <title>Sugestões</title>
     <link rel="stylesheet" href="style.css">

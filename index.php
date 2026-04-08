@@ -10,6 +10,7 @@ include "db.php"; // conexão $conn
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VGYVZ37XK1"></script>
 <script>

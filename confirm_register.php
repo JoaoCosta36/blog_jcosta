@@ -62,6 +62,7 @@ if(isset($_GET['token'])){
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <title>Confirmação de Registo</title>
     <style>

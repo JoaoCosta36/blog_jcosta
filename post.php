@@ -38,6 +38,7 @@ $comentarios_result = $comentarios_stmt->get_result();
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+<?php include 'adsense.php'; ?>
 <link rel="icon" href="icon.jpg" type="image/png">
 <meta charset="UTF-8">
 <meta charset="UTF-8">
