@@ -141,7 +141,7 @@ if (isset($_POST['register'])) {
                     <input type="password" name="senha" required>
                 </div>
 
-                <button type="submit" name="register" class="btn-submit">Registrar</button>
+                <button type="submit" name="register" class="btn-submit">Registar</button>
             </form>
             
             <div class="form-footer">

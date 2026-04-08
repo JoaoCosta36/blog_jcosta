@@ -63,7 +63,7 @@ if(isset($_POST['login'])){
     <input type="password" name="senha" placeholder="Senha" required maxlength="50">
     <button type="submit" name="login">Login</button>
 </form>
-<p>Não tem conta? <a href="register.php">Registrar-se</a></p>
+<p>Não tem conta? <a href="register.php">Registar-se</a></p>
 </div>
 
 </body>
