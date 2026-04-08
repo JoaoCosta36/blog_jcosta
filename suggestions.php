@@ -31,8 +31,7 @@ if($user_id && isset($_POST['enviar'])){
     if(empty($titulo) || empty($texto)){
         $erro = "Por favor, preencha todos os campos.";
     } else {
-        // ✅ CORREÇÃO 1: Coluna 'content' em vez de 'text'. 
-        // Removi 'activated' porque não existe na tua imagem.
+        // ✅ CORREÇÃO: Coluna 'content' conforme a tua BD
         $stmt = $conn->prepare("INSERT INTO suggestions (user_id, title, content, created_at) VALUES (?, ?, ?, NOW())");
         if(!$stmt){
             die("Erro no prepare: " . $conn->error);
@@ -42,7 +41,6 @@ if($user_id && isset($_POST['enviar'])){
         if($stmt->execute()){
             $sucesso = "Sugestão enviada com sucesso!";
 
-            // Envio de email (PHPMailer)
             if(!empty($env['GMAIL_USER']) && !empty($env['GMAIL_APP_PASS'])){
                 try {
                     $mail = new PHPMailer(true);
@@ -55,14 +53,14 @@ if($user_id && isset($_POST['enviar'])){
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    $mail->setFrom($env['GMAIL_USER'], $env['FROM_NAME'] ?? 'Blog');
+                    $mail->setFrom($env['GMAIL_USER'], $env['FROM_NAME'] ?? 'joaocostArt');
                     $mail->addAddress('jpscosta.music@gmail.com', 'João Costa');
                     $mail->isHTML(true);
-                    $mail->Subject = 'Nova sugestão';
-                    $mail->Body = "ID: $user_id <br> Titulo: $titulo <br> Mensagem: $texto";
+                    $mail->Subject = 'Nova sugestão no Blog';
+                    $mail->Body = "<strong>Nova Sugestão Recebida</strong><br><br>Titulo: $titulo <br> Mensagem: $texto";
                     $mail->send();
                 } catch (Exception $e) {
-                    $erro .= " Erro no email: " . $mail->ErrorInfo;
+                    // Erro silencioso no email para não confundir o user
                 }
             }
             $titulo = $texto = '';
@@ -73,51 +71,128 @@ if($user_id && isset($_POST['enviar'])){
     }
 }
 
-// ✅ CORREÇÃO 2: SELECT usa 'content' e não 'text'. 
-// Removi o filtro 'WHERE activated = 1' porque a coluna não existe na imagem.
-$sugestoes_result = $conn->query("SELECT s.title, s.content, u.nome 
-                                  FROM suggestions s 
-                                  JOIN users u ON s.user_id = u.id 
-                                  ORDER BY s.created_at DESC");
+// ✅ REMOVIDO O JOIN: Agora não identifica quem fez a sugestão
+$sugestoes_result = $conn->query("SELECT title, content, created_at FROM suggestions ORDER BY created_at DESC");
 ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<?php include 'adsense.php'; ?>
+    <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
-    <title>Sugestões</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugestões - joaocostArt</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+            font-family: 'EB Garamond', serif;
+        }
+
+        .form-wrapper {
+            background: rgba(45, 35, 25, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 178, 106, 0.3);
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+
+        .form-wrapper h1 { color: #d4b26a; text-align: center; margin-bottom: 20px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        .form-group label { color: #d4b26a; font-size: 0.9em; }
+        
+        .form-group input, .form-group textarea {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #5a4c3c;
+            border-radius: 6px;
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #d4b26a;
+            color: #2b241a;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover { background: #b6924d; }
+
+        .alert { padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center; }
+        .alert-error { background: rgba(255,0,0,0.2); color: #ff8888; border: 1px solid #ff0000; }
+        .alert-success { background: rgba(0,255,0,0.1); color: #88ff88; border: 1px solid #00ff00; }
+
+        /* Lista de Sugestões Anónimas */
+        .sugestao-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #d4b26a;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .sugestao-card h3 { color: #d4b26a; margin: 0 0 10px 0; font-size: 1.2em; }
+        .sugestao-card p { color: #c2b8a6; margin: 0; line-height: 1.5; }
+        .sugestao-card small { color: #5a4c3c; display: block; margin-top: 10px; }
+    </style>
 </head>
-<body style="padding: 60px 20px;">
+<body style="padding-top:60px;">
 
     <?php if(file_exists("nav_bar.php")) include "nav_bar.php"; ?>
 
-    <div style="max-width: 600px; margin: auto;">
-        <h1>Sugestões</h1>
+    <div class="container">
+        <div class="form-wrapper">
+            <h1>Sugestões</h1>
 
-        <?php if($erro) echo "<p style='color:red;'>$erro</p>"; ?>
-        <?php if($sucesso) echo "<p style='color:green;'>$sucesso</p>"; ?>
+            <?php if($erro): ?><div class="alert alert-error"><?php echo $erro; ?></div><?php endif; ?>
+            <?php if($sucesso): ?><div class="alert alert-success"><?php echo $sucesso; ?></div><?php endif; ?>
 
-        <?php if($user_id): ?>
-            <form method="post">
-                <input type="text" name="titulo" placeholder="Título" required style="width:100%; margin-bottom:10px; padding:8px;">
-                <textarea name="texto" placeholder="Sua sugestão" required style="width:100%; height:100px; padding:8px;"></textarea>
-                <button type="submit" name="enviar" style="padding:10px 20px; cursor:pointer;">Enviar</button>
-            </form>
-        <?php else: ?>
-            <p>Faz login para sugerir algo.</p>
-        <?php endif; ?>
+            <?php if($user_id): ?>
+                <form method="post">
+                    <div class="form-group">
+                        <label>Assunto</label>
+                        <input type="text" name="titulo" placeholder="Título da sugestão" required>
+                    </div>
+                    <div class="form-group">
+                        <label>A tua ideia</label>
+                        <textarea name="texto" placeholder="O que gostarias de ver no blog?" required rows="4"></textarea>
+                    </div>
+                    <button type="submit" name="enviar" class="btn-submit">Enviar Sugestão</button>
+                </form>
+            <?php else: ?>
+                <p style="text-align:center;">
+                    <a href="login.php" style="color:#d4b26a;">Faz login</a> para enviares uma sugestão.
+                </p>
+            <?php endif; ?>
+        </div>
 
-        <hr>
-
-        <h2>Lista de Sugestões</h2>
-        <?php while($sug = $sugestoes_result->fetch_assoc()): ?>
-            <div style="border-bottom: 1px solid #ccc; padding: 10px 0;">
-                <strong><?php echo htmlspecialchars($sug['title']); ?></strong> 
-                <small>(por <?php echo htmlspecialchars($sug['nome']); ?>)</small>
-                <p><?php echo nl2br(htmlspecialchars($sug['content'])); // ✅ USAR content aqui ?></p>
-            </div>
-        <?php endwhile; ?>
+        <div style="width: 100%; max-width: 600px;">
+            <h2 style="color: #d4b26a; border-bottom: 1px solid rgba(212,178,106,0.2); padding-bottom: 10px;">Ideias da Comunidade</h2>
+            
+            <?php while($sug = $sugestoes_result->fetch_assoc()): ?>
+                <div class="sugestao-card">
+                    <h3><?php echo htmlspecialchars($sug['title']); ?></h3>
+                    <p><?php echo nl2br(htmlspecialchars($sug['content'])); ?></p>
+                    <small>Enviada em: <?php echo date('d/m/Y H:i', strtotime($sug['created_at'])); ?></small>
+                </div>
+            <?php endwhile; ?>
+        </div>
     </div>
 </body>
 </html>
