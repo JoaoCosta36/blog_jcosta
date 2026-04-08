@@ -10,6 +10,15 @@ include "db.php"; // conexão $conn
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VGYVZ37XK1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VGYVZ37XK1');
+</script>
 <link rel="icon" href="icon.jpg" type="image/png">
 <meta charset="UTF-8">
 <link rel="icon" href="icon.jpg" type="image/png">
