@@ -80,8 +80,9 @@ $sugestoes_result = $conn->query("SELECT title, content, created_at FROM suggest
     <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sugestões - joaocostArt</title>
+    <title>Sugestões</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.jpg" type="image/jpeg">
     <style>
         .container {
             display: flex;

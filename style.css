@@ -1,222 +1,155 @@
 /* =========================================
-   Tema Vintage Celta
+   TEMA VINTAGE CELTA - EDIÇÃO FINAL RESPONSIVA
 ========================================= */
 
-/* Fonte geral */
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&display=swap');
 
-body {
-    font-family: 'EB Garamond', serif;
-    background: url('background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #e8e0d2;
-    margin: 0;
-   margin-left: 50px;  /* margem esquerda */
-    margin-right: 50px;
-    font-size: 1em; /* base levemente maior */
+/* 1. RESET E PREPARAÇÃO */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Fundo suave sobreposto para legibilidade */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden; /* Evita que o site "dance" para os lados */
+}
+
+/* 2. FUNDO (CORREÇÃO MOBILE) */
+body {
+    font-family: 'EB Garamond', serif;
+    color: #e8e0d2;
+    background-color: #1a1612;
+    /* Forçamos o fundo com !important para garantir que carrega */
+    background-image: url('background.jpg') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+    
+    /* Criamos a margem do topo para a navbar não tapar o conteúdo */
+    padding-top: 80px !important; 
+    /* Margens laterais globais */
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+}
+
+/* Overlay Escuro Fixo */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(25, 20, 10, 0.75);
+    background: rgba(15, 10, 5, 0.75);
     z-index: -1;
 }
 
-/* =========================================
-   Títulos
-========================================= */
-h1, h2 {
-    font-family: 'EB Garamond', serif;
-    color: #d4b26a;
-    letter-spacing: 0.5px;
-}
-
-h1 {
-    font-size: 2.4em; /* aumento leve */
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 1.8em;
-}
-
-/* =========================================
-   Navbar Transparente
-========================================= */
+/* 3. NAVBAR RESPONSIVA */
 .nav_bar {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.25);
-    height: 60px; /* ligeiramente maior */
+    width: 100% !important;
+    height: 70px;
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 25px;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(212,178,106,0.3);
-    font-family: 'EB Garamond', serif;
-    margin-left: 30px;  /* margem esquerda */
-    margin-right: 30px;
+    padding: 0 5% !important;
+    z-index: 9999;
+    border-bottom: 1px solid #d4b26a;
+    margin: 0 !important; /* Remove margens que tinhas antes */
 }
 
-.nav_bar ul li {
-    margin-right: 25px;
+/* 4. CONTENTORES DE CONTEÚDO (Centralização Automática) */
+/* Aplicamos isto a qualquer div principal como .post-container ou .formulario */
+.post-container, .formulario, .search-container, #posts, .main-content {
+    max-width: 800px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100%;
 }
 
-.nav_bar a {
-    color: #e8e0d2;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1em; /* aumento leve */
-    transition: color 0.3s;
-}
-
-.nav_bar a:hover {
-    color: #d4b26a;
-}
-
-.nav_bar-right {
-    display: flex;
-    align-items: center;
-}
-
-/* Dropdown de idioma */
-#customLang {
-    background: rgba(0, 0, 0, 0.3);
-    color: #f2e8d5;
-    border: 1px solid rgba(212,178,106,0.3);
-    padding: 6px 12px; /* maior */
-    border-radius: 6px;
-    font-size: 1em; /* maior */
-    cursor: pointer;
-}
-
-#customLang:hover {
-    background: rgba(212,178,106,0.15);
-}
-
-/* =========================================
-   Container de Posts
-========================================= */
-.post-container {
-    background: rgba(45, 35, 25, 0.85);
-    border: 1px solid rgba(212,178,106,0.3);
-    border-radius: 10px;
-    padding: 18px 22px; /* levemente maior */
-    margin-top: 90px;
-    max-width: 700px;
-    line-height: 1.5; /* leve aumento */
-}
-
-/* Posts compactos na index */
+/* 5. CARDS DE POSTS */
 .post-resumo {
-    background: rgba(35, 28, 20, 0.85);
-    border: 1px solid rgba(212,178,106,0.25);
-    padding: 12px 16px; /* aumento leve */
-    margin-bottom: 12px;
-    border-radius: 8px;
-    transition: all 0.2s ease-in-out;
+    background: rgba(45, 35, 25, 0.9);
+    border: 1px solid rgba(212, 178, 106, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, border-color 0.3s;
     cursor: pointer;
 }
 
 .post-resumo:hover {
-    background: rgba(50, 40, 25, 0.9);
-    transform: scale(1.02); /* leve aumento ao hover */
+    transform: translateY(-5px);
+    border-color: #d4b26a;
+    background: rgba(55, 45, 35, 1);
 }
 
-.post-resumo h2 {
-    margin: 0;
-    font-size: 1.4em; /* aumento leve */
-    color: #d4b26a;
-}
-
-.post-resumo small {
-    color: #c2b8a6;
-    font-size: 0.85em; /* aumento leve */
-    font-style: italic;
-}
-
-.post-resumo p {
-    color: #e8e0d2;
-    font-size: 1em; /* aumento leve */
-    margin: 5px 0 0;
-}
-
-/* =========================================
-   Inputs e botões
-========================================= */
-input, textarea {
-    width: 40%;
-    margin: 4px 0;
-    padding: 7px; /* leve aumento */
-    border-radius: 6px;
+/* 6. FORMULÁRIOS E INPUTS (100% Responsivos) */
+input, textarea, select {
+    width: 100% !important; /* No telemóvel têm de ser 100% */
+    max-width: 100%;
+    background: rgba(0, 0, 0, 0.4);
     border: 1px solid #5a4c3c;
-    background: rgba(255,255,255,0.08);
     color: #fff;
-    font-family: 'EB Garamond', serif;
-    font-size: 1em; /* aumento leve */
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-family: inherit;
 }
-
-textarea { resize: vertical; max-height: 180px; }
 
 button {
+    width: 100%;
+    padding: 12px;
     background: #d4b26a;
-    color: #2b241a;
-    font-family: 'EB Garamond', serif;
-    font-size: 1.05em; /* leve aumento */
+    color: #1a1612;
     border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1em;
     cursor: pointer;
-    margin-top: 6px;
-    padding: 7px 16px; /* aumento leve */
-    border-radius: 5px;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: #b6924d;
-    color: #fff;
+    background: #fff;
+    color: #1a1612;
 }
 
-/* =========================================
-   Comentários
-========================================= */
-.comentarios {
-    margin-top: 20px;
-    max-width: 700px;
+/* 7. AJUSTES ESPECÍFICOS PARA TELEMÓVEL */
+@media screen and (max-width: 768px) {
+    body {
+        /* No mobile, o fixed costuma bugar a imagem. 'scroll' resolve. */
+        background-attachment: scroll !important;
+        padding-top: 100px !important; /* Mais espaço para a nav que pode crescer */
+        font-size: 16px;
+    }
+
+    .nav_bar {
+        height: auto;
+        padding: 10px 5% !important;
+        flex-direction: column; /* Logo em cima, menu em baixo */
+    }
+
+    .nav_bar ul {
+        padding: 0;
+        margin: 10px 0 0 0;
+        display: flex;
+        gap: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em !important;
+    }
 }
 
-.comentario {
-    padding: 8px 10px;
-    margin-bottom: 6px;
-    border-radius: 6px;
-    border: 1px solid rgba(212,178,106,0.25);
-    background: rgba(60, 50, 35, 0.7);
-}
-
-.comentario small {
-    display: block;
-    margin-bottom: 3px;
-    font-size: 0.85em; /* aumento leve */
-    color: #c7bca4;
-}
-
-.comentario p {
-    margin: 0;
-    font-size: 0.95em; /* aumento leve */
-    line-height: 1.35em; /* leve aumento */
-}
-
-/* =========================================
-   Google Translate - Ocultar
-========================================= */
-.goog-te-banner-frame.skiptranslate,
-body > .skiptranslate,
-iframe.goog-te-menu-frame {
-    display: none !important;
-}
+/* Ocultar elementos desnecessários do Google */
+.goog-te-banner-frame.skiptranslate, 
+body > .skiptranslate, 
+iframe.goog-te-menu-frame { display: none !important; }
 body { top: 0 !important; }

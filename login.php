@@ -45,8 +45,8 @@ if(isset($_POST['login'])){
     <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - joaocostArt</title>
-    <link rel="icon" href="icon.png" type="image/png">
+    <title>Login</title>
+    <link rel="icon" href="icon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css">
     <style>
         /* Estrutura idêntica ao Registo */

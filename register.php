@@ -74,7 +74,7 @@ if (isset($_POST['register'])) {
                     $link = "https://joaocostart.com/confirm_register.php?token=" . $token;
                     
                     $mail->isHTML(true);
-                    $mail->Subject = 'Confirma o teu Registo - joaocostArt';
+                    $mail->Subject = 'Confirma o teu Registo';
                     $mail->Body    = "<h2>Bem-vindo, $nome!</h2><p>Clique no botão abaixo para ativar a sua conta:</p>
                                      <a href='$link' style='background:#d4b26a; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;'>Confirmar Conta</a>";
 
@@ -98,8 +98,9 @@ if (isset($_POST['register'])) {
     <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registo - joaocostArt</title>
+    <title>Registo</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.jpg" type="image/jpeg">
     <style>
         /* Correção de Alinhamento */
         .container {
