@@ -1,5 +1,5 @@
 <?php
-/** * 1. LÓGICA E CONFIGURAÇÃO
+/** * 1. LÓGICA E CONFIGURAÇÃO - MUSICS
  */
 header('Content-Type: text/html; charset=UTF-8');
 ini_set('display_errors', 1);
@@ -27,13 +27,12 @@ include "db.php";
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversas - João Costa</title>
+    <title>Músicas - João Costa</title>
     <link rel="icon" href="icon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <style>
-        /* Reutilizamos o teu sistema de variáveis */
         :root {
             --accent: #d4b26a;
             --bg-card: rgba(45, 35, 25, 0.85);
@@ -41,22 +40,19 @@ include "db.php";
             --text-dim: #c2b8a6;
         }
 
-        /* O estilo agora vem maioritariamente do style.css que corrigimos, 
-           mas mantemos os ajustes de layout aqui */
         .main-content {
             max-width: 900px;
             margin: 0 auto 40px auto;
             padding: 20px;
         }
 
-        .podcast-grid {
+        .music-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
         }
 
-        /* Estilo específico para o ícone de Play ou Podcast */
-        .podcast-item {
+        .music-item {
             background: var(--bg-card);
             padding: 25px;
             border-radius: 12px;
@@ -68,24 +64,24 @@ include "db.php";
             gap: 20px;
         }
 
-        .podcast-item:hover {
+        .music-item:hover {
             transform: translateY(-5px);
             border-color: var(--accent);
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        .podcast-icon {
+        .music-icon {
             font-size: 2.5em;
             color: var(--accent);
         }
 
-        .podcast-info h2 {
+        .music-info h2 {
             margin: 0 0 5px 0;
             color: var(--accent);
             font-size: 1.6em;
         }
 
-        .podcast-info small {
+        .music-info small {
             color: var(--text-dim);
             font-style: italic;
         }
@@ -96,26 +92,26 @@ include "db.php";
 <?php include "nav_bar.php"; ?>
 
 <div class="main-content">
-    <h1 class="page-title">Conversas</h1>
+    <h1 class="page-title">Músicas</h1>
 
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Pesquisar episódios...">
+        <input type="text" id="searchInput" placeholder="Pesquisar músicas...">
     </div>
 
-    <div id="podcasts" class="podcast-grid">
+    <div id="musics" class="music-grid">
     <?php
-    // Aqui podes mudar para a tua tabela de podcasts
-    $result = $conn->query("SELECT * FROM podcasts ORDER BY created_at DESC");
+    // Aqui assumimos que a tabela se chama 'musics'. Se for outro nome, basta alterar abaixo.
+    $result = $conn->query("SELECT * FROM musics ORDER BY created_at DESC");
     
     if($result && $result->num_rows > 0):
         while($row = $result->fetch_assoc()):
             $data = date('d/m/Y', strtotime($row['created_at']));
     ?>
-        <div class="podcast-item" onclick="window.location.href='view_podcast.php?id=<?php echo $row['id']; ?>'">
-            <div class="podcast-icon">🎙️</div>
-            <div class="podcast-info">
+        <div class="music-item" onclick="window.location.href='view_music.php?id=<?php echo $row['id']; ?>'">
+            <div class="music-icon">🎵</div>
+            <div class="music-info">
                 <h2><?php echo htmlspecialchars($row['title']); ?></h2>
-                <small>Episódio de <?php echo $data; ?></small>
+                <small>Lançada em <?php echo $data; ?></small>
                 <p><?php 
                     $desc = strip_tags($row['description']);
                     echo strlen($desc) > 120 ? substr($desc, 0, 120) . '...' : $desc; 
@@ -125,21 +121,21 @@ include "db.php";
     <?php
         endwhile;
     else:
-        echo "<p style='text-align:center; color: var(--text-dim);'>Brevemente novos episódios.</p>";
+        echo "<p style='text-align:center; color: var(--text-dim);'>Brevemente novas músicas.</p>";
     endif;
     ?>
     </div>
 </div>
 
 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1): ?>
-    <a href="add_podcast.php" class="admin-add-btn" title="Adicionar Episódio">+</a>
+    <a href="add_music.php" class="admin-add-btn" title="Adicionar Música">+</a>
 <?php endif; ?>
 
 <script>
 $(document).ready(function(){
     $('#searchInput').on('input', function(){
         var query = $(this).val().toLowerCase();
-        $(".podcast-item").filter(function() {
+        $(".music-item").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(query) > -1)
         });
     });
