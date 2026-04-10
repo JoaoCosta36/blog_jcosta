@@ -12,6 +12,8 @@ $user_logged = isset($_SESSION['user_id']);
         <li><a href="index.php">Início</a></li>
         <li><a href="suggestions.php">Sugestões</a></li>
         <li><a href="about.php">Sobre mim</a></li>
+        <li><a href="podcasts.php">Conversas</a></li>
+        <li><a href="musics.php">As minhas músicas</a></li>
     </ul>
 
     <!-- Menu direito -->

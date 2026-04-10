@@ -27,7 +27,7 @@ include "db.php";
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podcasts - João Costa</title>
+    <title>Conversas - João Costa</title>
     <link rel="icon" href="icon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

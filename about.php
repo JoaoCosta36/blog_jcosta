@@ -16,10 +16,16 @@ header('Content-Type: text/html; charset=UTF-8');
 <?php include "nav_bar.php"; ?>
 <body style="padding-top:60px;">
 <h1>Sobre mim</h1>
-<p>Olá. Sou o João. Sou de 1996. Apaixonado pela profundidade da vida e a música ajuda-me nisso.
-     Criei este blog para exprimir muito do que vejo, pensamentos, visões, filosofias, questões.
-    Sou um impaciente apaixonado pela vida, inquieto por dentro mas pacífico por fora.
+<p>Olá. Sou o João. Sou de 1996. <p>Apaixonado pela profundidade da vida e a música ajuda-me nisso.<p>
 
+     Criei este blog para exprimir muito do que vejo, pensamentos, visões, filosofias, questões.<p>
+
+    Sou um impaciente apaixonado pela vida, inquieto por dentro mas pacífico por fora.
+     <p>
+        Estou a aprender violino e jogo ténis de mesa. <p>
+            Quero aprender mais instrumentos como piano, saxofone e trabalhar com keyboards
+            <p>
+                
     "Music is an everlasting deep sense of life"
 </p>
 </body>
