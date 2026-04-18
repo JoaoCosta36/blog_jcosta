@@ -29,13 +29,138 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
 ?>
 <!DOCTYPE html>
 <html lang="pt">
-<head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Master Dashboard | João Costa</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* CSS ESPECÍFICO DO DASHBOARD CORRIGIDO */
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            padding: 40px 2%;
+            align-items: start;
+        }
+
+        /* Sidebar */
+        .sidebar-nav {
+            background: rgba(30, 25, 20, 0.95);
+            border: 1px solid rgba(212, 178, 106, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            position: sticky;
+            top: 110px;
+        }
+
+        .sidebar-nav h3 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid rgba(212, 178, 106, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            background: transparent;
+            color: #e8e0d2;
+            border: 1px solid rgba(212, 178, 106, 0.1);
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            text-align: left;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .nav-link i { margin-right: 10px; width: 20px; text-align: center; }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(212, 178, 106, 0.15);
+            border-color: #d4b26a;
+            color: #d4b26a;
+        }
+
+        /* Painel Principal com scroll horizontal para tabelas longas */
+        .main-panel {
+            background: rgba(15, 12, 10, 0.85);
+            border: 1px solid rgba(212, 178, 106, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            min-height: 600px;
+            overflow-x: auto;
+        }
+
+        /* Ajuste das tabelas para mostrar o "Conteúdo" */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th { color: #d4b26a; text-align: left; padding: 10px; border-bottom: 2px solid #d4b26a; }
+        td { padding: 12px 10px; border-bottom: 1px solid rgba(212, 178, 106, 0.1); vertical-align: top; }
+
+        /* Limitar visualmente o texto longo na tabela, mas permitir edição */
+        .col-content {
+            max-width: 300px;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .col-content:focus {
+            max-width: none;
+            max-height: none;
+            white-space: normal;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Modal Overlay */
+        #modalOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #1a1612;
+            border: 2px solid #d4b26a;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(212, 178, 106, 0.2);
+        }
+
+        .btn-create {
+            background: #d4b26a !important;
+            color: #1a1612 !important;
+            font-weight: bold;
+            margin-top: 20px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .edit-field:focus {
+            outline: 2px solid #d4b26a;
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
 <body>
 
@@ -51,24 +176,24 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
         <button class="nav-link" data-tab="list_users"><i class="fa-solid fa-users"></i> Users</button>
         <button class="nav-link" data-tab="list_comments"><i class="fa-solid fa-comments"></i> Comentários</button>
         
-        <button onclick="openModal()" style="background:#d4b26a; color:#1a1612; font-weight:bold; margin-top:20px; width:100%;">
+        <button onclick="openModal()" class="btn-create">
             <i class="fa-solid fa-plus"></i> CRIAR NOVO
         </button>
     </aside>
 
     <section class="main-panel" id="ajaxContent">
-        <p>A carregar conteúdo...</p>
+        <p style="color:#d4b26a;">A carregar conteúdo...</p>
     </section>
 </div>
 
 <div id="modalOverlay">
     <div class="modal-content">
-        <h2 style="color:#d4b26a; margin-bottom: 20px;">Adicionar Conteúdo</h2>
+        <h2 style="color:#d4b26a; margin-bottom: 25px; text-align:center; text-transform:uppercase;">Adicionar Conteúdo</h2>
         <form id="adminForm" enctype="multipart/form-data">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($tokenUrl); ?>">
             <input type="hidden" name="action" value="save_item">
             
-            <label>Tipo de Conteúdo</label>
+            <label style="display:block; margin-bottom:10px; color:#d4b26a;">Tipo de Conteúdo</label>
             <select name="item_type" id="itemTypeSelector" onchange="toggleFields(this.value)">
                 <option value="post">Publicação (Blog)</option>
                 <option value="music">Música</option>
@@ -83,14 +208,14 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
             </div>
 
             <div id="mediaFields" style="display:none;">
-                <label>Ficheiro de Áudio (MP3)</label>
+                <label style="display:block; margin:15px 0 5px; color:#d4b26a;">Ficheiro de Áudio (MP3)</label>
                 <input type="file" name="audio_file" accept="audio/*">
-                <input type="text" name="media" placeholder="Link do Vídeo (Opcional)">
+                <input type="text" name="media_url" placeholder="Link do Vídeo (Opcional)">
             </div>
 
-            <div style="margin-top:20px; display:flex; gap:10px;">
-                <button type="submit" style="flex:2;">GUARDAR</button>
-                <button type="button" onclick="$('#modalOverlay').hide()" style="flex:1; background:#444; color:white;">FECHAR</button>
+            <div style="margin-top:30px; display:flex; gap:15px;">
+                <button type="submit" style="flex:2; background:#d4b26a; color:#1a1612; font-weight:bold; border:none; padding:12px; border-radius:5px; cursor:pointer;">GUARDAR</button>
+                <button type="button" onclick="$('#modalOverlay').hide()" style="flex:1; background:#444; color:white; border:none; padding:12px; border-radius:5px; cursor:pointer;">CANCELAR</button>
             </div>
         </form>
     </div>
@@ -171,5 +296,5 @@ function deleteItem(id, type) {
     }
 }
 </script>
-</body>
+<?php include 'footer.php'; ?></body>
 </html>

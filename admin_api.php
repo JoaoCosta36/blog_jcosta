@@ -1,7 +1,7 @@
 <?php
 /**
  * MASTER ADMIN API - João Costa
- * Versão Final: Suporte a Upload de Ficheiros e Edição Total
+ * Versão Final: Suporte a Upload de Ficheiros, Edição Total e Coluna de Conteúdo
  */
 
 include "db.php";
@@ -67,15 +67,37 @@ if ($action == 'update_field') {
 }
 
 /**
- * LISTAGENS (Posts, Podcasts, Musics, Users, Suggestions, Comments)
+ * LISTAGENS
  */
 
 if ($action == 'list_posts') {
     $res = $conn->query("SELECT * FROM posts ORDER BY created_at DESC");
     echo "<h2><i class='fa-solid fa-newspaper'></i> Publicações</h2>";
-    echo "<table class='modern-table'><thead><tr><th>ID</th><th>Título</th><th>Media</th><th>Data</th><th>Ação</th></tr></thead><tbody>";
+    echo "<table class='modern-table'>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Conteúdo</th>
+                    <th>Media</th>
+                    <th>Data</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>";
     while($r = $res->fetch_assoc()) {
-        echo "<tr><td>#{$r['id']}</td><td contenteditable='true' class='edit-field' data-id='{$r['id']}' data-type='post' data-column='title'>{$r['title']}</td><td contenteditable='true' class='edit-field' data-id='{$r['id']}' data-type='post' data-column='media'>{$r['media']}</td><td>".date('d/m/Y', strtotime($r['created_at']))."</td><td><i class='fa-solid fa-trash delete-icon' onclick='deleteItem({$r['id']}, \"post\")'></i></td></tr>";
+        echo "<tr>
+                <td>#{$r['id']}</td>
+                <td contenteditable='true' class='edit-field' data-id='{$r['id']}' data-type='post' data-column='title'>{$r['title']}</td>
+                <td>
+                    <div contenteditable='true' class='edit-field col-content' data-id='{$r['id']}' data-type='post' data-column='content' style='max-width:300px; max-height:60px; overflow:hidden;'>
+                        {$r['content']}
+                    </div>
+                </td>
+                <td contenteditable='true' class='edit-field' data-id='{$r['id']}' data-type='post' data-column='media'>{$r['media']}</td>
+                <td>".date('d/m/Y', strtotime($r['created_at']))."</td>
+                <td><i class='fa-solid fa-trash delete-icon' onclick='deleteItem({$r['id']}, \"post\")'></i></td>
+              </tr>";
     }
     echo "</tbody></table>";
 }
@@ -142,7 +164,6 @@ if ($action == 'save_item') {
     $cont = $_POST['conteudo'];
     $audio_url = "";
 
-    // Lógica de Upload de Áudio (para Podcast ou Music)
     if (!empty($_FILES['audio_file']['name'])) {
         $target_dir = "uploads/audio/";
         if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
@@ -161,7 +182,7 @@ if ($action == 'save_item') {
         echo $stmt->execute() ? "sucesso" : $conn->error;
     } else if ($type == 'podcast' || $type == 'music') {
         $table = ($type == 'music') ? 'musics' : 'podcasts';
-        $v_url = $_POST['media'] ?? ''; // Usamos o campo media como video_url aqui
+        $v_url = $_POST['media'] ?? ''; 
         $stmt = $conn->prepare("INSERT INTO $table (title, description, audio_url, video_url, created_at) VALUES (?, ?, ?, ?, NOW())");
         $stmt->bind_param("ssss", $tit, $cont, $audio_url, $v_url);
         echo $stmt->execute() ? "sucesso" : $conn->error;

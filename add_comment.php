@@ -1,37 +1,51 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8');
+// Ativar exibição de erros para caso a tabela ainda não esteja pronta
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 include "db.php";
 session_start();
 
-// Verifica se o utilizador está logado
+// 1. Verificação de Segurança
 if(!isset($_SESSION['user_id'])) { 
-    header("Location: login.php"); 
-    exit; 
+    die("Erro: Precisas de estar logado para comentar."); 
 }
 
-// Verifica se a mensagem existe e não está vazia
-if(!isset($_POST['mensagem']) || empty(trim($_POST['mensagem']))) { 
-    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-    header("Location: post.php?id=$post_id"); 
-    exit; 
+// 2. Captura e Limpeza de Dados
+// Usamos content_id que serve para ID de Post, Música ou Podcast
+$c_id     = isset($_POST['content_id']) ? intval($_POST['content_id']) : 0;
+$mensagem = isset($_POST['mensagem']) ? trim($_POST['mensagem']) : '';
+$u_id     = $_SESSION['user_id'];
+$tipo     = isset($_POST['tipo']) ? $_POST['tipo'] : 'post'; 
+
+// 3. Mapeamento de Retorno (Para onde o utilizador volta)
+$urls = [
+    'post'    => 'post.php',
+    'music'   => 'view_music.php',
+    'podcast' => 'view_podcast.php'
+];
+
+$return_page = isset($urls[$tipo]) ? $urls[$tipo] : 'index.php';
+
+// 4. Inserção na Base de Dados
+if($c_id > 0 && !empty($mensagem)) {
+    // IMPORTANTE: Esta query assume que já fizeste o ALTER TABLE na tabela comments
+    $sql = "INSERT INTO comments (user_id, content_type, content_id, mensagem) VALUES (?, ?, ?, ?)";
+    
+    if ($stmt = $conn->prepare($sql)) {
+        // "isis" -> Integer (user_id), String (tipo), Integer (content_id), String (mensagem)
+        $stmt->bind_param("isis", $u_id, $tipo, $c_id, $mensagem);
+        
+        if(!$stmt->execute()) {
+            // Se der erro aqui, provavelmente as colunas content_type/content_id não existem
+            die("Erro ao salvar comentário: " . $stmt->error);
+        }
+        $stmt->close();
+    } else {
+        die("Erro na preparação da base de dados: " . $conn->error);
+    }
 }
 
-$post_id = intval($_POST['post_id']);
-$user_id = $_SESSION['user_id'];
-
-// Escapar a mensagem para evitar SQL Injection
-$mensagem = $conn->real_escape_string($_POST['mensagem']);
-
-// Inserir o comentário na base de dados
-$query = "INSERT INTO comments (post_id, user_id, mensagem) VALUES ($post_id, $user_id, '$mensagem')";
-
-if($conn->query($query)) {
-    // Redireciona de volta para o post após sucesso
-    header("Location: post.php?id=$post_id");
-} else {
-    // Em caso de erro técnico, volta ao post para não deixar página em branco
-    header("Location: post.php?id=$post_id&error=1");
-}
+// 5. Redirecionamento Final
+header("Location: " . $return_page . "?id=" . $c_id);
 exit;
-?>

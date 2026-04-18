@@ -10,16 +10,30 @@ $stmt->execute();
 $m = $stmt->get_result()->fetch_assoc();
 
 if (!$m) { die("Música não encontrada."); }
+
+// --- BUSCAR COMENTÁRIOS (Filtrando por Música) ---
+$comentarios_result = false;
+$sql_comentarios = "SELECT c.mensagem, c.created_at, u.nome 
+                    FROM comments c 
+                    JOIN users u ON c.user_id = u.id 
+                    WHERE c.content_id = ? AND c.content_type = 'music' 
+                    ORDER BY c.created_at ASC";
+
+if ($com_stmt = $conn->prepare($sql_comentarios)) {
+    $com_stmt->bind_param("i", $id);
+    $com_stmt->execute();
+    $comentarios_result = $com_stmt->get_result();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <?php include 'adsense.php'; ?>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <?php if(file_exists('adsense.php')) include 'adsense.php'; ?>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title><?php echo htmlspecialchars($m['title']); ?> | joaocostArt</title>
     <link rel="icon" href="icon.jpg" type="image/jpeg">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -29,52 +43,66 @@ if (!$m) { die("Música não encontrada."); }
 <div class="page-wrapper" style="max-width: 800px;">
     
     <div style="text-align: center; margin-bottom: 30px;">
-        <a href="musics.php" style="text-decoration: none; color: #888; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='#d4b26a'" onmouseout="this.style.color='#888'">
-            <i class="fa-solid fa-arrow-left"></i> Voltar à Galeria Musical
+        <a href="musics.php" style="text-decoration: none; color: #888; transition: 0.3s;" onmouseover="this.style.color='#d4b26a'" onmouseout="this.style.color='#888'">
+            <i class="fa-solid fa-arrow-left"></i> Voltar à Galeria
         </a>
     </div>
 
-    <div class="content-block" style="text-align: center; padding: 50px 30px;">
+    <div class="content-block" style="text-align: center; padding: 40px; border-radius: 10px;">
+        <h1 style="color: #d4b26a; font-size: 2rem;"><?php echo htmlspecialchars($m['title']); ?></h1>
         
-        <div style="margin-bottom: 40px;">
-            <div style="width: 150px; height: 150px; background: rgba(212, 178, 106, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 2px solid #d4b26a; box-shadow: 0 0 30px rgba(212, 178, 106, 0.2);">
-                <i class="fa-solid fa-compact-disc fa-spin" style="font-size: 5rem; color: #d4b26a; --fa-animation-duration: 4s;"></i>
-            </div>
-        </div>
-
-        <h1 style="color: #d4b26a; font-size: 2.2rem; margin-bottom: 10px; letter-spacing: 1px;">
-            <?php echo htmlspecialchars($m['title']); ?>
-        </h1>
-        
-        <p style="color: #888; font-style: italic; margin-bottom: 30px;">Obra Musical de João Costa</p>
-
         <?php if(!empty($m['audio_url'])): ?>
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 50px; margin-bottom: 40px; border: 1px solid rgba(212,178,106,0.2);">
-                <audio controls style="width:100%; filter: sepia(20%) saturate(70%) grayscale(100%) contrast(150%) invert(100%);">
+            <div style="margin: 30px 0; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 50px;">
+                <audio controls style="width:100%;">
                     <source src="<?php echo $m['audio_url']; ?>" type="audio/mpeg">
-                    O teu navegador não suporta este elemento de áudio.
                 </audio>
             </div>
         <?php endif; ?>
 
-        <div style="text-align: justify; line-height: 1.8; color: #f2e8d5; font-size: 1.1rem; border-top: 1px solid rgba(212,178,106,0.1); padding-top: 30px;">
-            <i class="fa-solid fa-quote-left" style="color: #d4b26a; opacity: 0.3; font-size: 1.5rem;"></i>
-            <p style="padding: 0 20px; display: inline;">
-                <?php echo nl2br(htmlspecialchars($m['description'])); ?>
-            </p>
+        <div style="text-align: justify; color: #f2e8d5; line-height: 1.6;">
+            <?php echo nl2br(htmlspecialchars($m['description'])); ?>
         </div>
-
     </div>
 
-    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1): ?>
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="edit_music.php?id=<?php echo $m['id']; ?>" class="btn-auth" style="text-decoration: none; font-size: 0.9rem;">
-                <i class="fa-solid fa-pen-to-square"></i> Editar Música
-            </a>
+    <section class="content-block" style="margin-top: 30px; background: rgba(20, 15, 10, 0.6); padding: 25px;">
+        <h3 style="color: #d4b26a; margin-bottom: 20px;">
+            <i class="fa-regular fa-comments"></i> Comentários
+        </h3>
+
+        <?php if($comentarios_result && $comentarios_result->num_rows > 0): ?>
+            <?php while($comentario = $comentarios_result->fetch_assoc()): ?>
+                <div style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(212,178,106,0.1);">
+                    <strong style="color: #d4b26a;"><?php echo htmlspecialchars($comentario['nome']); ?></strong>
+                    <small style="color: #666; margin-left: 10px;"><?php echo date('d/m/Y', strtotime($comentario['created_at'])); ?></small>
+                    <p style="margin-top: 5px; color: #e8e0d2;"><?php echo nl2br(htmlspecialchars($comentario['mensagem'])); ?></p>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p style="color: #888; font-style: italic;">Ainda não existem comentários para esta música.</p>
+        <?php endif; ?>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212,178,106,0.2);">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <form method="post" action="add_comment.php">
+                    <input type="hidden" name="content_id" value="<?php echo $id; ?>">
+                    <input type="hidden" name="tipo" value="music">
+                    
+                    <textarea name="mensagem" placeholder="Deixa a tua opinião sobre esta obra..." required 
+                              style="width: 100%; min-height: 100px; background: #111; color: #fff; border: 1px solid #444; padding: 12px; border-radius: 5px;"></textarea>
+                    <button type="submit" class="btn-auth" style="margin-top: 10px; width: 100%;">Publicar Comentário</button>
+                </form>
+            <?php else: ?>
+                <div style="text-align: center; padding: 20px; background: rgba(212,178,106,0.05); border: 1px dashed #d4b26a; border-radius: 8px;">
+                    <p style="color: #c2b8a6; margin-bottom: 10px;">
+                        Queres partilhar o que sentiste ao ouvir esta música?
+                    </p>
+                    <a href="login.php" class="btn-auth" style="display: inline-block; text-decoration: none; padding: 8px 25px;">
+                        <i class="fa-solid fa-user"></i> Faz Login para comentar
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
-
+    </section>
 </div>
-
-</body>
+<?php include 'footer.php'; ?></body>
 </html>

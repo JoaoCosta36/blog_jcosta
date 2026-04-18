@@ -30,11 +30,11 @@ if (isset($_POST['login'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pt">
-<head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Login | João Costa</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body>
 
@@ -69,5 +69,5 @@ if (isset($_POST['login'])) {
         </div>
     </div>
 
-</body>
+<?php include 'footer.php'; ?></body>
 </html>

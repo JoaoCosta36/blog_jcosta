@@ -65,13 +65,13 @@ if (isset($_POST['criar'])) {
 
 <!DOCTYPE html>
 <html lang="pt">
-<head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Criar Post | João Costa</title>
     <link rel="icon" href="icon.png" type="image/png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.3">
     <style>
         /* Estilo específico apenas para a Dropzone que não está no global */
         .dropzone {
@@ -148,5 +148,5 @@ if (isset($_POST['criar'])) {
     });
 </script>
 
-</body>
+<?php include 'footer.php'; ?></body>
 </html>

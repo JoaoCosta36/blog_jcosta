@@ -4,12 +4,12 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pt">
-<head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Privacidade | João Costa</title>
     <link rel="icon" href="icon.jpg" type="image/jpeg">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -61,5 +61,5 @@ session_start();
         </div>
     </div>
 
-</body>
+<?php include 'footer.php'; ?></body>
 </html>

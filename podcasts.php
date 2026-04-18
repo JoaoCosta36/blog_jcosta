@@ -13,7 +13,7 @@ include "db.php";
 ?>
 <!DOCTYPE html>
 <html lang="pt">
-<head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <?php include 'adsense.php'; ?>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VGYVZ37XK1"></script>
@@ -25,10 +25,10 @@ include "db.php";
     </script>
     
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
     <title>Conversas | João Costa</title>
     <link rel="icon" href="icon.jpg" type="image/jpeg">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -107,5 +107,5 @@ $(document).ready(function(){
 });
 </script>
 
-</body>
+<?php include 'footer.php'; ?></body>
 </html>
