@@ -1,46 +1,23 @@
-/* =========================================
-   TEMA VINTAGE CELTA - VERSÃO FINAL CORRIGIDA
-========================================= */
+/* =======================================================
+   TEMA VINTAGE CELTA - MASTER GLOBAL STYLE
+   Proprietário: João Costa
+   ======================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&display=swap');
-/* FORÇAR ALINHAMENTO DA NAVBAR */
-.nav-links {
-    display: flex !important;
-    flex-direction: row !important;
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap');
 
-.nav-links li {
-    margin-right: 20px !important;
-    list-style-type: none !important;
-}
-
-.nav-container {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100%;
-}
-
-/* Remover os pontos azuis e sublinhados genéricos */
-.nav-links a {
-    text-decoration: none !important;
-    color: #f2e8d5 !important;
-}
-/* 1. RESET E BASE */
+/* --- 1. CONFIGURAÇÕES BASE E RESET --- */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
-    margin: 0;
-    padding: 0;
     width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -52,221 +29,251 @@ body {
     background-position: center center !important;
     background-size: cover !important;
     background-attachment: fixed !important;
-    padding-top: 100px !important; /* Espaço para a navbar fixa */
+    padding-top: 100px !important; 
+    line-height: 1.6;
 }
 
-/* Overlay Escuro Fixo */
+/* Overlay para garantir legibilidade do texto sobre o fundo */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(15, 10, 5, 0.75);
+    background: rgba(15, 10, 5, 0.78);
     z-index: -1;
 }
 
-/* 2. NAVBAR (ESTILO GERAL) */
+/* --- 2. NAVBAR (ESTILO CELTA FIXO) --- */
 .nav_bar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100% !important;
-    min-height: 70px;
+    min-height: 75px;
     background: rgba(10, 8, 5, 0.95) !important;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
-    justify-content: center;
-    z-index: 99999 !important; /* Garantir que fica acima de tudo */
-    border-bottom: 1px solid rgba(212, 178, 106, 0.4);
-    margin: 0 !important;
+    z-index: 9999 !important;
+    border-bottom: 1px solid rgba(212, 178, 106, 0.3);
 }
 
 .nav-container {
     width: 95%;
     max-width: 1200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-}
-
-/* Lista de Links */
-.nav-links {
-    list-style: none !important;
+    margin: 0 auto;
     display: flex !important;
-    gap: 25px;
-    margin: 0 !important;
-    padding: 0 !important;
+    justify-content: space-between !important;
+    align-items: center !important;
 }
 
-.nav-links li {
-    display: inline-block !important;
+.nav-links {
+    display: flex !important;
+    list-style: none !important;
+    gap: 25px;
 }
 
 .nav-links a {
-    color: #f2e8d5;
-    text-decoration: none;
-    font-size: 1.05rem;
+    color: #f2e8d5 !important;
+    text-decoration: none !important;
+    font-size: 1.1rem;
     transition: 0.3s;
     font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 .nav-links a:hover {
-    color: #d4b26a;
+    color: #d4b26a !important;
+    text-shadow: 0 0 8px rgba(212, 178, 106, 0.4);
 }
 
-/* Lado Direito (Idioma + Botão) */
 .nav_bar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px;
 }
 
-/* Dropdown de Idioma */
-#customLang {
-    background: rgba(255, 255, 255, 0.05);
+/* Seletor de Idioma Customizado */
+.lang-select {
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(212, 178, 106, 0.3);
     color: #e8e0d2;
-    padding: 6px 10px;
-    border-radius: 4px;
+    padding: 5px 10px;
+    border-radius: 5px;
     cursor: pointer;
     font-family: inherit;
-    width: auto !important; /* Impede que o seletor fique com 100% */
-    margin: 0 !important;
+    outline: none;
 }
 
-/* Botão de Login/Logout */
 .btn-auth {
     background: #d4b26a;
-    color: #1a1612;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-    font-size: 0.9rem;
+    color: #1a1612 !important;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: 0.3s ease;
 }
 
 .btn-auth:hover {
     background: #f2e8d5;
+    box-shadow: 0 0 15px rgba(212, 178, 106, 0.3);
     transform: translateY(-2px);
 }
 
-/* 3. ESTRUTURA DE PÁGINAS */
-.page-wrapper {
-    max-width: 900px;
+/* --- 3. DASHBOARD E PAINÉIS ADMIN --- */
+.admin-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 20px;
-    text-align: center;
-    animation: fadeIn 0.8s ease-in;
+}
+
+.sidebar-nav, .main-panel {
+    background: rgba(35, 30, 25, 0.9);
+    border: 1px solid rgba(212, 178, 106, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+/* --- 4. COMPONENTES DE CONTEÚDO (POSTS E PÁGINAS) --- */
+.page-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: fadeIn 0.6s ease-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .content-block {
     background: rgba(30, 26, 22, 0.85);
-    padding: 40px;
-    border-radius: 15px;
-    border: 1px solid rgba(212, 178, 106, 0.2);
-    margin: 20px 0;
-    color: #e8e0d2;
-    text-align: justify;
-    line-height: 1.8;
-    font-size: 1.15rem;
-}
-
-/* Imagem de Perfil Circular */
-.img-profile-circle {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #d4b26a;
-    box-shadow: 0 0 20px rgba(212, 178, 106, 0.2);
-    margin-bottom: 20px;
-}
-
-/* 4. FORMULÁRIOS */
-.form-container {
-    max-width: 450px;
-    margin: 40px auto;
-    background: rgba(25, 20, 15, 0.95);
-    padding: 40px;
+    padding: 35px;
     border-radius: 12px;
-    border: 1px solid #d4b26a;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(212, 178, 106, 0.15);
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-input, textarea, select {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid #5a4c3c;
-    color: #fff;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-family: inherit;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    background: #d4b26a;
-    color: #1a1612;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #f2e8d5;
-}
-
-/* 5. CARDS */
-.custom-card, .post-resumo {
-    background: rgba(45, 35, 25, 0.85);
-    border: 1px solid rgba(212, 178, 106, 0.3);
+/* Cards de Listagem (Index e Musics) */
+.post-resumo, .music-item {
+    display: flex;
+    background: rgba(30, 25, 20, 0.95);
+    border: 1px solid rgba(212, 178, 106, 0.15);
+    margin-bottom: 25px;
     border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.post-resumo:hover, .music-item:hover {
+    border-color: #d4b26a;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(212, 178, 106, 0.2);
+}
+
+.post-preview-img {
+    width: 30%;
+    min-width: 200px;
+    background-size: cover;
+    background-position: center;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-info {
     padding: 25px;
-    margin-bottom: 20px;
-    transition: 0.3s;
+    flex: 1;
     text-align: left;
 }
 
-/* 6. RESPONSIVIDADE (MOBILE) */
-@media screen and (max-width: 850px) {
-    body {
-        padding-top: 130px !important; /* Espaço extra para nav em duas linhas */
-    }
+.post-info h2, .music-info h2 {
+    color: #d4b26a;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
 
+/* Estilo para Vídeos e Animações */
+.video-thumb { position: relative; }
+.video-thumb::after {
+    content: "\f144";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    font-size: 3rem;
+    color: rgba(212,178,106,0.7);
+}
+
+.fa-spin-hover:hover {
+    animation: fa-spin 2s infinite linear;
+}
+
+/* --- 5. FORMULÁRIOS E BOTÕES --- */
+input, textarea, select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 178, 106, 0.3);
+    color: #fff;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+input:focus, textarea:focus {
+    border-color: #d4b26a;
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.form-container {
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 40px;
+    background: rgba(35, 30, 25, 0.95);
+    border-radius: 15px;
+    border: 1px solid rgba(212, 178, 106, 0.2);
+    text-align: center;
+}
+
+/* --- 6. RESPONSIVIDADE --- */
+@media screen and (max-width: 850px) {
+    body { padding-top: 160px !important; }
+    
     .nav-container {
         flex-direction: column;
-        gap: 15px;
+        padding: 15px 0;
     }
-
+    
     .nav-links {
         gap: 12px;
         flex-wrap: wrap;
         justify-content: center;
     }
 
-    .nav-links a {
-        font-size: 0.9rem;
+    .post-resumo {
+        flex-direction: column;
+        height: auto;
     }
 
-    .nav_bar-right {
+    .post-preview-img {
         width: 100%;
-        justify-content: center;
+        height: 200px;
+    }
+
+    .admin-layout {
+        grid-template-columns: 1fr;
     }
 }
 
-/* Limpeza do Google Translate */
-.goog-te-banner-frame.skiptranslate, 
-.skiptranslate, 
-iframe.goog-te-menu-frame { display: none !important; }
+/* Google Translate Cleanup */
+.goog-te-banner-frame.skiptranslate, .skiptranslate, iframe.goog-te-menu-frame { display: none !important; }
 body { top: 0 !important; }

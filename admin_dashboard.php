@@ -24,7 +24,7 @@ $tokenUrl = trim($_GET['token'] ?? '');
 $tokenEnv = trim($_ENV['POST_TOKEN'] ?? '');
 
 if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
-    die("<h1 style='color:red; text-align:center; margin-top:100px; font-family:sans-serif;'>🚫 Acesso Negado</h1>");
+    die("<h1 style='color:#ff6b6b; text-align:center; margin-top:100px; font-family:serif;'>🚫 Acesso Negado</h1>");
 }
 ?>
 <!DOCTYPE html>
@@ -36,25 +36,6 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        :root { --gold: #d4b26a; --bg: #1a1612; --card: rgba(35, 30, 25, 0.98); }
-        body { padding-top: 90px; background: var(--bg); color: #e8e0d2; font-family: sans-serif; }
-        .admin-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .sidebar-nav { background: var(--card); border: 1px solid rgba(212,178,106,0.2); border-radius: 15px; padding: 20px; position: sticky; top: 100px; height: fit-content; }
-        .sidebar-nav button { width: 100%; padding: 12px; margin-bottom: 8px; border: none; background: none; color: #ccc; text-align: left; cursor: pointer; border-radius: 8px; transition: 0.3s; }
-        .sidebar-nav button.active { background: rgba(212,178,106,0.1); color: var(--gold); }
-        .main-panel { background: var(--card); border: 1px solid rgba(212,178,106,0.2); border-radius: 15px; padding: 30px; min-height: 70vh; }
-        .modern-table { width: 100%; border-collapse: collapse; }
-        .modern-table th { color: var(--gold); padding: 12px; border-bottom: 2px solid #333; text-align: left; }
-        .modern-table td { padding: 12px; border-bottom: 1px solid #222; }
-        .edit-field:hover { outline: 1px dashed var(--gold); background: rgba(255,255,255,0.05); }
-        .delete-icon { color: #ff6b6b; cursor: pointer; padding: 5px; }
-        #modalOverlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999; align-items: center; justify-content: center; overflow-y: auto; padding: 20px; }
-        .modal-content { background: #25201b; width: 100%; max-width: 600px; padding: 30px; border-radius: 15px; border: 1px solid var(--gold); }
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #444; color: #fff; border-radius: 5px; }
-        .btn-plus { background: var(--gold); padding: 8px; border-radius: 5px; cursor: pointer; color: #000; border: none; }
-        .dynamic-link { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
-    </style>
 </head>
 <body>
 
@@ -62,27 +43,32 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
 
 <div class="admin-layout">
     <aside class="sidebar-nav">
-        <h3 style="color:var(--gold); text-align:center;">ADMIN</h3>
+        <h3 style="color:#d4b26a; text-align:center; margin-bottom: 20px;">ADMIN</h3>
         <button class="nav-link active" data-tab="list_posts"><i class="fa-solid fa-pen-nib"></i> Posts</button>
         <button class="nav-link" data-tab="list_musics"><i class="fa-solid fa-music"></i> Músicas</button>
         <button class="nav-link" data-tab="list_podcasts"><i class="fa-solid fa-microphone"></i> Podcasts</button>
         <button class="nav-link" data-tab="list_suggestions"><i class="fa-solid fa-lightbulb"></i> Sugestões</button>
         <button class="nav-link" data-tab="list_users"><i class="fa-solid fa-users"></i> Users</button>
         <button class="nav-link" data-tab="list_comments"><i class="fa-solid fa-comments"></i> Comentários</button>
-        <button onclick="openModal()" style="background:var(--gold); color:black; font-weight:bold; margin-top:10px;"><i class="fa-solid fa-plus"></i> CRIAR NOVO</button>
+        
+        <button onclick="openModal()" style="background:#d4b26a; color:#1a1612; font-weight:bold; margin-top:20px; width:100%;">
+            <i class="fa-solid fa-plus"></i> CRIAR NOVO
+        </button>
     </aside>
 
-    <section class="main-panel" id="ajaxContent"></section>
+    <section class="main-panel" id="ajaxContent">
+        <p>A carregar conteúdo...</p>
+    </section>
 </div>
 
 <div id="modalOverlay">
     <div class="modal-content">
-        <h2 style="color:var(--gold);">Adicionar Conteúdo</h2>
+        <h2 style="color:#d4b26a; margin-bottom: 20px;">Adicionar Conteúdo</h2>
         <form id="adminForm" enctype="multipart/form-data">
-            <input type="hidden" name="token" value="<?php echo $tokenUrl; ?>">
+            <input type="hidden" name="token" value="<?php echo htmlspecialchars($tokenUrl); ?>">
             <input type="hidden" name="action" value="save_item">
             
-            <label>Tipo</label>
+            <label>Tipo de Conteúdo</label>
             <select name="item_type" id="itemTypeSelector" onchange="toggleFields(this.value)">
                 <option value="post">Publicação (Blog)</option>
                 <option value="music">Música</option>
@@ -90,7 +76,7 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
             </select>
 
             <input type="text" name="titulo" placeholder="Título" required>
-            <textarea name="conteudo" placeholder="Descrição / Conteúdo" required style="height:100px;"></textarea>
+            <textarea name="conteudo" placeholder="Descrição / Conteúdo" required style="height:120px;"></textarea>
 
             <div id="postFields">
                 <input type="text" name="media" placeholder="URL da Imagem ou YouTube">
@@ -103,8 +89,8 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
             </div>
 
             <div style="margin-top:20px; display:flex; gap:10px;">
-                <button type="submit" style="flex:1; background:var(--gold); color:black; padding:15px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">GUARDAR</button>
-                <button type="button" onclick="$('#modalOverlay').hide()" style="flex:1; background:#444; color:white; border:none; border-radius:8px; cursor:pointer;">FECHAR</button>
+                <button type="submit" style="flex:2;">GUARDAR</button>
+                <button type="button" onclick="$('#modalOverlay').hide()" style="flex:1; background:#444; color:white;">FECHAR</button>
             </div>
         </form>
     </div>
@@ -114,7 +100,7 @@ if ($tokenUrl === '' || $tokenUrl !== $tokenEnv) {
 const dashboardToken = "<?php echo $tokenUrl; ?>";
 
 function loadTab(tab) {
-    $("#ajaxContent").html("<p>A carregar...</p>");
+    $("#ajaxContent").html("<p style='color:#d4b26a;'>A carregar...</p>");
     $.get("admin_api.php", { action: tab, token: dashboardToken }, function(data) {
         $("#ajaxContent").html(data);
     });
@@ -140,7 +126,6 @@ $(document).ready(function() {
         loadTab($(this).data('tab'));
     });
 
-    // Submissão com Ficheiros
     $("#adminForm").on('submit', function(e) {
         e.preventDefault();
         let formData = new FormData(this);
@@ -160,7 +145,6 @@ $(document).ready(function() {
         });
     });
 
-    // Edição Direta
     $(document).on('blur', '.edit-field', function() {
         let el = $(this);
         $.post("admin_api.php", {
@@ -172,7 +156,7 @@ $(document).ready(function() {
             token: dashboardToken
         }, function(res) {
             if(res.trim() === "OK") {
-                el.css('background', 'rgba(0,255,0,0.1)');
+                el.css('background', 'rgba(212, 178, 106, 0.2)');
                 setTimeout(() => el.css('background', 'transparent'), 400);
             }
         });
@@ -180,7 +164,7 @@ $(document).ready(function() {
 });
 
 function deleteItem(id, type) {
-    if(confirm("Deseja apagar?")) {
+    if(confirm("Tem a certeza que deseja apagar este item?")) {
         $.post("admin_api.php", { action: 'delete_item', id: id, type: type, token: dashboardToken }, function() {
             loadTab($(".nav-link.active").data('tab'));
         });

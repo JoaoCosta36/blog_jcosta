@@ -22,12 +22,12 @@
         <p>Olá, o meu nome é João. Nasci em 1996 e este blog é o meu espaço de expressão pessoal e artística.</p>
         <p>Sou um apaixonado pela profundidade da vida e a música é a minha bússola. Atualmente, dedico-me ao estudo do violino, mas pretendo explorar outros instrumentos como o piano e o saxofone.</p>
         <p>Sou inquieto por dentro, sempre em busca de novas filosofias, mas tento transmitir paz por fora. Além da arte, pratico ténis de mesa para manter o foco e a disciplina.</p>
+        
+        <div style="margin-top: 30px; text-align: center; font-style: italic; color: #d4b26a;">
+            "Music is an everlasting deep sense of life" <br>
+            <strong style="color: #e8e0d2;">— João Costa</strong>
+        </div>
     </div>
-
-    <span class="site-quote">
-        "Music is an everlasting deep sense of life" <br>
-        <strong>— João Costa</strong>
-    </span>
 </div>
 
 </body>

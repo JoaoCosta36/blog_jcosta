@@ -3,7 +3,6 @@
  */
 header('Content-Type: text/html; charset=UTF-8');
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -27,116 +26,82 @@ include "db.php";
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Músicas - João Costa</title>
+    <title>Músicas | João Costa</title>
     <link rel="icon" href="icon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <style>
-        :root {
-            --accent: #d4b26a;
-            --bg-card: rgba(45, 35, 25, 0.85);
-            --text-main: #f4f4f4;
-            --text-dim: #c2b8a6;
-        }
-
-        .main-content {
-            max-width: 900px;
-            margin: 0 auto 40px auto;
-            padding: 20px;
-        }
-
-        .music-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-        }
-
-        .music-item {
-            background: var(--bg-card);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(212, 178, 106, 0.15);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .music-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        .music-icon {
-            font-size: 2.5em;
-            color: var(--accent);
-        }
-
-        .music-info h2 {
-            margin: 0 0 5px 0;
-            color: var(--accent);
-            font-size: 1.6em;
-        }
-
-        .music-info small {
-            color: var(--text-dim);
-            font-style: italic;
-        }
-    </style>
 </head>
 <body>
 
 <?php include "nav_bar.php"; ?>
 
-<div class="main-content">
-    <h1 class="page-title">Músicas</h1>
+<div class="page-wrapper">
+    <h1 style="text-align:center; color:#d4b26a; letter-spacing:3px; margin-bottom:30px; text-transform:uppercase;">
+        Músicas
+    </h1>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Pesquisar músicas...">
-    </div>
-
-    <div id="musics" class="music-grid">
-    <?php
-    // Aqui assumimos que a tabela se chama 'musics'. Se for outro nome, basta alterar abaixo.
-    $result = $conn->query("SELECT * FROM musics ORDER BY created_at DESC");
-    
-    if($result && $result->num_rows > 0):
-        while($row = $result->fetch_assoc()):
-            $data = date('d/m/Y', strtotime($row['created_at']));
-    ?>
-        <div class="music-item" onclick="window.location.href='view_music.php?id=<?php echo $row['id']; ?>'">
-            <div class="music-icon">🎵</div>
-            <div class="music-info">
-                <h2><?php echo htmlspecialchars($row['title']); ?></h2>
-                <small>Lançada em <?php echo $data; ?></small>
-                <p><?php 
-                    $desc = strip_tags($row['description']);
-                    echo strlen($desc) > 120 ? substr($desc, 0, 120) . '...' : $desc; 
-                ?></p>
-            </div>
+    <div class="main-content" style="max-width: 800px; margin: 0 auto;">
+        
+        <div style="margin-bottom: 40px; text-align: center;">
+            <input type="text" id="searchInput" placeholder="Filtrar por título ou descrição..." 
+                   style="width: 100%; max-width: 400px; padding: 12px; border-radius: 25px; border: 1px solid #d4b26a; background: rgba(255,255,255,0.05); color: #fff;">
         </div>
-    <?php
-        endwhile;
-    else:
-        echo "<p style='text-align:center; color: var(--text-dim);'>Brevemente novas músicas.</p>";
-    endif;
-    ?>
+
+        <div id="musics-list">
+        <?php
+        // Consulta à base de dados
+        $result = $conn->query("SELECT * FROM musics ORDER BY created_at DESC");
+        
+        if($result && $result->num_rows > 0):
+            while($row = $result->fetch_assoc()):
+                $data = date('d/m/Y', strtotime($row['created_at']));
+        ?>
+            <div class="music-item content-block" 
+                 onclick="window.location.href='view_music.php?id=<?php echo $row['id']; ?>'" 
+                 style="cursor: pointer; display: flex; align-items: center; gap: 20px; transition: 0.3s; margin-bottom: 20px;">
+                
+                <div style="font-size: 2rem; color: #d4b26a;">
+                    <i class="fa-solid fa-compact-disc fa-spin-hover"></i>
+                </div>
+
+                <div style="flex: 1;">
+                    <h2 style="color: #d4b26a; margin: 0; font-size: 1.4rem;"><?php echo htmlspecialchars($row['title']); ?></h2>
+                    <small style="color: #888;">Publicado em <?php echo $data; ?></small>
+                    <p style="margin-top: 8px; color: #c2b8a6; font-size: 0.95rem;">
+                        <?php 
+                        $desc = strip_tags($row['description']);
+                        echo mb_strimwidth($desc, 0, 100, "..."); 
+                        ?>
+                    </p>
+                </div>
+                
+                <div style="color: #d4b26a; opacity: 0.5;">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </div>
+        <?php
+            endwhile;
+        else:
+            echo "<p style='text-align:center; color: #c2b8a6;'>Novas composições em breve.</p>";
+        endif;
+        ?>
+        </div>
     </div>
 </div>
 
 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1): ?>
-    <a href="add_music.php" class="admin-add-btn" title="Adicionar Música">+</a>
+    <a href="admin_dashboard.php" class="admin-add-btn" title="Painel Admin" 
+       style="position: fixed; bottom: 30px; right: 30px; background: #d4b26a; color: #1a1612; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none;">+</a>
 <?php endif; ?>
 
 <script>
 $(document).ready(function(){
-    $('#searchInput').on('input', function(){
-        var query = $(this).val().toLowerCase();
+    // Lógica de pesquisa em tempo real
+    $('#searchInput').on('keyup', function(){
+        var value = $(this).val().toLowerCase();
         $(".music-item").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(query) > -1)
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
 });

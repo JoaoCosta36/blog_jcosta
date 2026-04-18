@@ -16,7 +16,7 @@ if (file_exists($phpmailer_dir . 'PHPMailer.php')) {
     require_once $phpmailer_dir . 'PHPMailer.php';
     require_once $phpmailer_dir . 'SMTP.php';
 } else {
-    die("Erro Crítico: Pasta PHPMailer não encontrada em: " . $phpmailer_dir);
+    die("Erro Crítico: Pasta PHPMailer não encontrada.");
 }
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -74,15 +74,22 @@ if (isset($_POST['register'])) {
                     $link = "https://joaocostart.com/confirm_register.php?token=" . $token;
                     
                     $mail->isHTML(true);
-                    $mail->Subject = 'Confirma o teu Registo';
-                    $mail->Body    = "<h2>Bem-vindo, $nome!</h2><p>Clique no botão abaixo para ativar a sua conta:</p>
-                                     <a href='$link' style='background:#d4b26a; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;'>Confirmar Conta</a>";
+                    $mail->Subject = 'Confirma o teu Registo | joaocostArt';
+                    $mail->Body    = "
+                        <div style='background:#1a1612; color:#f2e8d5; padding:40px; font-family:serif; text-align:center;'>
+                            <h2 style='color:#d4b26a;'>Bem-vindo, $nome!</h2>
+                            <p>Obrigado por te juntares à nossa comunidade. Falta apenas um passo.</p>
+                            <br>
+                            <a href='$link' style='background:#d4b26a; color:#1a1612; padding:12px 25px; text-decoration:none; border-radius:5px; font-weight:bold;'>Confirmar Conta</a>
+                            <br><br>
+                            <p style='font-size:0.8em; color:#888;'>Se não criaste esta conta, ignora este email.</p>
+                        </div>";
 
                     $mail->send();
-                    $sucesso = "Registo efetuado! Verifica a tua caixa de entrada.";
+                    $sucesso = "Registo efetuado! Verifica o teu email para ativar a conta.";
                     $nome = $paixao_por = $email = ''; 
                 } catch (Exception $e) {
-                    $sucesso = "Conta criada, mas houve um erro ao enviar o email de confirmação.";
+                    $sucesso = "Conta criada, mas houve um erro ao enviar o email. Contacta o suporte.";
                 }
             } else {
                 $erro = "Erro ao processar o registo. Tente novamente.";
@@ -98,143 +105,60 @@ if (isset($_POST['register'])) {
     <?php include 'adsense.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registo</title>
+    <title>Criar Conta | João Costa</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.jpg" type="image/jpeg">
-    <style>
-        /* Correção de Alinhamento */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            padding: 20px;
-        }
-
-        .form-wrapper {
-            background: rgba(45, 35, 25, 0.9);
-            padding: 40px;
-            border-radius: 15px;
-            border: 1px solid rgba(212, 178, 106, 0.3);
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .form-wrapper h1 {
-            color: #d4b26a;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .form-wrapper p {
-            text-align: center;
-            color: #c2b8a6;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column; /* Alinha label em cima do input */
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            color: #d4b26a;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #5a4c3c;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 1em;
-            width: 100%;
-            box-sizing: border-box; /* Garante que o padding não quebre a largura */
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: #d4b26a;
-            color: #2b241a;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover {
-            background: #b6924d;
-            transform: translateY(-2px);
-        }
-
-        .alert {
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .alert-danger { background: rgba(255, 0, 0, 0.2); color: #ff8888; border: 1px solid #ff0000; }
-        .alert-success { background: rgba(0, 255, 0, 0.1); color: #88ff88; border: 1px solid #00ff00; }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .form-footer a { color: #d4b26a; text-decoration: none; }
-    </style>
 </head>
 <body>
 
-    <?php if(file_exists('nav_bar.php')) include 'nav_bar.php'; ?>
+    <?php include 'nav_bar.php'; ?>
 
-    <div class="container">
-        <div class="form-wrapper">
-            <h1>Criar Conta</h1>
-            <p>Junta-te à nossa comunidade</p>
+    <div class="page-wrapper" style="display:flex; justify-content:center; align-items:center; min-height:80vh;">
+        <div class="content-block" style="max-width: 450px; width: 100%; padding: 40px;">
+            
+            <h1 style="color: #d4b26a; text-align: center; margin-bottom: 10px;">Criar Conta</h1>
+            <p style="text-align: center; color: #c2b8a6; margin-bottom: 30px;">Junta-te à nossa comunidade</p>
 
             <?php if ($erro): ?>
-                <div class="alert alert-danger"><?php echo htmlspecialchars($erro); ?></div>
+                <div style="background: rgba(255, 0, 0, 0.1); color: #ff8888; padding: 10px; border: 1px solid #ff0000; border-radius: 6px; margin-bottom: 20px; text-align: center;">
+                    <?php echo htmlspecialchars($erro); ?>
+                </div>
             <?php endif; ?>
 
             <?php if ($sucesso): ?>
-                <div class="alert alert-success"><?php echo htmlspecialchars($sucesso); ?></div>
+                <div style="background: rgba(0, 255, 0, 0.1); color: #88ff88; padding: 10px; border: 1px solid #00ff00; border-radius: 6px; margin-bottom: 20px; text-align: center;">
+                    <?php echo htmlspecialchars($sucesso); ?>
+                </div>
             <?php endif; ?>
 
             <form method="POST" action="">
-                <div class="form-group">
-                    <label>Nome Completo</label>
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #d4b26a; display: block; margin-bottom: 5px; font-weight: bold;">Nome Completo</label>
                     <input type="text" name="nome" value="<?php echo htmlspecialchars($nome); ?>" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Paixão por...</label>
-                    <input type="text" name="paixao_por" value="<?php echo htmlspecialchars($paixao_por); ?>" placeholder="Ex: Música dos anos 80">
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #d4b26a; display: block; margin-bottom: 5px; font-weight: bold;">Paixão por...</label>
+                    <input type="text" name="paixao_por" value="<?php echo htmlspecialchars($paixao_por); ?>" placeholder="Ex: Música Clássica, Pintura...">
                 </div>
 
-                <div class="form-group">
-                    <label>Email</label>
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #d4b26a; display: block; margin-bottom: 5px; font-weight: bold;">Email</label>
                     <input type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Palavra-passe</label>
+                <div style="margin-bottom: 25px;">
+                    <label style="color: #d4b26a; display: block; margin-bottom: 5px; font-weight: bold;">Palavra-passe</label>
                     <input type="password" name="senha" required>
                 </div>
 
-                <button type="submit" name="register" class="btn-submit">Registar</button>
+                <button type="submit" name="register" class="btn-auth" style="width: 100%; font-size: 1.1rem;">
+                    Criar Conta
+                </button>
             </form>
             
-            <div class="form-footer">
-                <p>Já tens conta? <a href="login.php">Faz login aqui</a></p>
+            <div style="text-align: center; margin-top: 25px; border-top: 1px solid rgba(212,178,106,0.1); padding-top: 20px;">
+                <p style="color: #c2b8a6;">Já tens conta? <a href="login.php" style="color: #d4b26a; text-decoration: none; font-weight: bold;">Entrar aqui</a></p>
             </div>
         </div>
     </div>
