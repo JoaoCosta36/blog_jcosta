@@ -153,3 +153,41 @@ button:hover {
 body > .skiptranslate, 
 iframe.goog-te-menu-frame { display: none !important; }
 body { top: 0 !important; }
+/* --- ESTRUTURA GLOBAL LIMPA --- */
+.page-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.content-block {
+    background: rgba(30, 26, 22, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(212, 178, 106, 0.2);
+    margin-top: 20px;
+    color: #e8e0d2;
+    text-align: justify;
+    line-height: 1.8;
+}
+
+/* Para formulários (Login/Register/Sugestões) */
+.form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: rgba(30, 26, 22, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #d4b26a;
+}
+
+/* Para cartões de sugestões ou listas */
+.custom-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid #d4b26a;
+    text-align: left;
+}
